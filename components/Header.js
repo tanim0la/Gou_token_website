@@ -6,7 +6,7 @@ import { useTypewriter, Cursor } from 'react-simple-typewriter'
 function Header() {
   let accounts
 
-  const [word, setWord] = useState('')
+  const [word, setWord] = useState('CONNECT WALLET')
   const { text } = useTypewriter({
     words: [
       'Uchiha',
