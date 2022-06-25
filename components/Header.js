@@ -59,7 +59,7 @@ function Header() {
       setWord(accounts[0])
     } else {
       // We are on the server *OR* the user is not running metamask
-      setWord('CONNECT WALLET')
+      setWord('NO METAMASK')
     }
   }
 
