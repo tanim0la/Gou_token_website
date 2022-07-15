@@ -86,7 +86,7 @@ function Airdrop() {
         </span>
         <input
           hidden={eligible}
-          className="border-0 border-b-2 border-stone-400 w-4/5 bg-transparent rounded-br-sm rounded-bl-sm pb-1"
+          className="border-0 border-b-2 border-stone-400 w-4/5 bg-transparent rounded-br-sm rounded-bl-sm pb-1 focus:outline-none"
           placeholder=" Enter Address 0x..."
           value={address}
           onChange={(e) => setAddress(e.target.value)}
