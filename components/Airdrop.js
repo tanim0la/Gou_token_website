@@ -28,9 +28,7 @@ function Airdrop() {
     setErrMessage('')
     setBool(true)
     try {
-      const check = await gou.methods
-        .whitelistedAddresses(this.state.address)
-        .call()
+      const check = await gou.methods.whitelistedAddresses(address).call()
 
       if (check) {
         setAddy(address)
@@ -93,7 +91,7 @@ function Airdrop() {
         />
 
         <div className="py-4">
-          {!this.state.eligible ? (
+          {!eligible ? (
             <button
               className="rounded-lg border-2 border-red-800 hover:border-green-400 p-2 text-sm transition delay-100 duration-300 ease-in-out font-semibold"
               onClick={onClaim}
@@ -112,7 +110,7 @@ function Airdrop() {
           )}
         </div>
 
-        {this.state.errMessage ? (
+        {errMessage ? (
           <span className="border-0 border-red-800 text-red-400 px-4 sm:px-0">
             <span className="font-semibold text-2xl">Oops...</span>
             <br />
