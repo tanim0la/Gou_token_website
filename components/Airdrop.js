@@ -68,7 +68,7 @@ function Airdrop() {
   }
 
   const offModal = (mode) => {
-    this.setState({ modalOn: mode })
+    setModalOn(mode)
   }
 
   return (
