@@ -35,8 +35,14 @@ function Header() {
         setWord('CONNECT WALLET')
       }
     }
-
-    onConnect()
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.ethereum !== 'undefined'
+    ) {
+      onConnect()
+    } else {
+      setWord('CONNECT WALLET')
+    }
   }, [word])
 
   const onConnect = async (e) => {

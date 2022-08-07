@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import airdrop from '../public/airdrop.png'
-import Web3 from 'web3'
+import { ethers } from 'ethers'
 import gou from '../ethereum/uchiha'
+import Uchiha from '../ethereum/build/Uchiha.json'
 import Modal from './Modal'
-
-let web3
+import { useRouter } from 'next/router'
 
 function Airdrop() {
   const [address, setAddress] = useState('')
@@ -16,19 +16,13 @@ function Airdrop() {
   const [modalOn, setModalOn] = useState(false)
   const [bool, setBool] = useState(false)
 
+  const Router = useRouter()
+
   const onClaim = async () => {
-    web3 = new Web3(window.ethereum)
-    const accounts = await web3.eth.getAccounts()
-    if (accounts.length == 0) {
-      const provider = new Web3.providers.HttpProvider(
-        'https://rinkeby.infura.io/v3/adaa638d09ba451589fc8a00235e3489',
-      )
-      web3 = new Web3(provider)
-    }
     setErrMessage('')
     setBool(true)
     try {
-      const check = await gou.methods.whitelistedAddresses(address).call()
+      const check = await gou.whitelistedAddresses(address)
 
       if (check) {
         setAddy(address)
@@ -47,24 +41,42 @@ function Airdrop() {
   }
 
   const onJoin = async () => {
-    web3 = new Web3(window.ethereum)
-    const accounts = await web3.eth.getAccounts()
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.ethereum !== 'undefined'
+    ) {
+      setButtonMsg('Please wait...')
+      setErrMessage('')
+      setBool(true)
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      try {
+        await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        })
+        const instance = new ethers.Contract(
+          '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
+          Uchiha.abi,
+          provider.getSigner(),
+        )
+        await instance.whitelistAddress().then((tx) => tx.wait())
 
-    setButtonMsg('Please wait...')
-    setErrMessage('')
-    setBool(true)
-    try {
-      await gou.methods.whitelistAddress().send({
-        from: accounts[0],
-      })
-    } catch (err) {
-      setErrMessage(err.message)
+        setButtonMsg('Join Whitelist')
+        setAddress('')
+        setEligible(false)
+        setBool(false)
+        Router.push('/')
+      } catch (err) {
+        setErrMessage(err.message)
+        setButtonMsg('Join Whitelist')
+        setAddress('')
+        setEligible(false)
+        setBool(false)
+      }
+    } else {
+      setErrMessage('You dont have Metamask Installed.')
+      setAddress('')
+      setEligible(false)
     }
-
-    setButtonMsg('Join Whitelist')
-    setAddress('')
-    setEligible(false)
-    setBool(false)
   }
 
   const offModal = (mode) => {

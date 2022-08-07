@@ -1,35 +1,53 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
-import Web3 from 'web3'
+import { ethers } from 'ethers'
 import gou from '../ethereum/uchiha'
+import Uchiha from '../ethereum/build/Uchiha.json'
+import { useRouter } from 'next/router'
 import cong from '../public/cong.png'
 
 function Modal(props) {
   const [buttonMsg, setButtonMsg] = useState('Claim!')
   const [bool, setBool] = useState(false)
 
-  const onClaim = async () => {
-    const web3 = new Web3(window.ethereum)
-    const accounts = await web3.eth.getAccounts()
-    const isClaimed = await gou.methods.claimedAddresses(props.address).call()
+  const Router = useRouter()
 
-    setButtonMsg('Claiming...')
-    setBool(true)
-    try {
-      if (!isClaimed) {
-        await gou.methods.claim().send({
-          from: accounts[0],
-        })
+  const onClaim = async () => {
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.ethereum !== 'undefined'
+    ) {
+      const isClaimed = await gou.claimedAddresses(props.address)
+
+      setButtonMsg('Claiming...')
+      setBool(true)
+      try {
+        if (!isClaimed) {
+          const provider = new ethers.providers.Web3Provider(window.ethereum)
+          await window.ethereum.request({
+            method: 'eth_requestAccounts',
+          })
+          const instance = new ethers.Contract(
+            '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
+            Uchiha.abi,
+            provider.getSigner(),
+          )
+          await instance.claim().then((tx) => tx.wait())
+        }
+      } catch (err) {
+        onCancel()
       }
-    } catch (err) {
-      onCancel()
+      setButtonMsg('Claimed!')
+    } else {
+      setButtonMsg('No Metamask!')
     }
-    setButtonMsg('Claimed!')
   }
 
   const onCancel = () => {
     props.offModal(false)
+    Router.push('/')
   }
+
   return (
     <div className="flex bg-zinc-100 justify-center items-center fixed h-screen w-screen inset-0 z-50 transition-all">
       <div className="flex flex-col p-2 bg-white rounded-xl h-fit sm:h-3/4 w-2/3 md:w-1/2">
