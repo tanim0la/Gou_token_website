@@ -59,9 +59,9 @@ function Staking(props) {
           setGouInstance(gouInstance)
           setStaking(isStake)
           setAllowance(parseInt(ethers.utils.formatEther(totalAllowance)))
-          setAmountStaked(String(tStake))
+          setAmountStaked(parseFloat(tStake).toFixed(1))
           setApyy(ethers.utils.formatEther(apy))
-          setAvailable(ethers.utils.formatEther(acctBal))
+          setAvailable(parseFloat(ethers.utils.formatEther(acctBal)).toFixed(1))
           setBool(false)
         } catch (err) {
           console.log(err.message)
