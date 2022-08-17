@@ -5,7 +5,7 @@ function Countdown() {
     new Date(
       `${
         new Date().getMonth() + 1
-      }/${new Date().getDate()}/${new Date().getFullYear()} 18:59:59`,
+      }/${new Date().getDate()}/${new Date().getFullYear()} 19:59:59`,
     ).getTime(),
   )
   const [hours, setHours] = useState(0)
@@ -35,7 +35,7 @@ function Countdown() {
           new Date(
             `${
               new Date().getMonth() + 1
-            }/${new Date().getDate()}/${new Date().getFullYear()} 18:59:59`,
+            }/${new Date().getDate()}/${new Date().getFullYear()} 19:59:59`,
           ).getTime() + 86400000,
         )
       }
