@@ -54,7 +54,7 @@ function Staking(props) {
           const reward = await stake.rewards(accounts[0])
           const apy = await stake.apy()
 
-          setReward(ethers.utils.formatEther(reward))
+          setReward(parseFloat(ethers.utils.formatEther(reward)).toFixed(1))
           setStakingInstance(stakingInstance)
           setGouInstance(gouInstance)
           setStaking(isStake)
