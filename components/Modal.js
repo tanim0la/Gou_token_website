@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { ethers } from 'ethers'
 import gou from '../ethereum/uchiha'

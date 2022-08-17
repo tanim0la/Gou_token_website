@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import Uchiha from './build/Uchiha.json'
+import Staking from './build/Staking.json'
 
 let instance
 
@@ -11,8 +11,8 @@ if (
   const provider = new ethers.providers.Web3Provider(window.ethereum)
 
   instance = new ethers.Contract(
-    '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
-    Uchiha.abi,
+    '0x31fd0691809Ec54499d7363Be76807c9cbDD0e38',
+    Staking.abi,
     provider.getSigner(),
   )
 } else {
@@ -22,8 +22,8 @@ if (
   )
 
   instance = new ethers.Contract(
-    '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
-    Uchiha.abi,
+    '0x31fd0691809Ec54499d7363Be76807c9cbDD0e38',
+    Staking.abi,
     provider,
   )
 }
