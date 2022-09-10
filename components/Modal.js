@@ -3,14 +3,11 @@ import Image from 'next/image'
 import { ethers } from 'ethers'
 import gou from '../ethereum/uchiha'
 import Uchiha from '../ethereum/build/Uchiha.json'
-import { useRouter } from 'next/router'
 import cong from '../public/cong.png'
 
 function Modal(props) {
   const [buttonMsg, setButtonMsg] = useState('Claim!')
   const [bool, setBool] = useState(false)
-
-  const Router = useRouter()
 
   const onClaim = async () => {
     if (
@@ -45,16 +42,15 @@ function Modal(props) {
 
   const onCancel = () => {
     props.offModal(false)
-    Router.push('/')
   }
 
   return (
-    <div className="flex bg-zinc-100 justify-center items-center fixed h-screen w-screen inset-0 z-50 transition-all">
+    <div className="flex bg-zinc-100 bg-opacity-30 justify-center items-center fixed h-screen w-screen inset-0 z-50 transition-all">
       <div className="flex flex-col p-2 bg-white rounded-xl h-fit sm:h-3/4 w-2/3 md:w-1/2">
         <div className="flex justify-end px-2">
           <span
             onClick={onCancel}
-            className=" cursor-pointer text-gray-400 font-semibold"
+            className=" cursor-pointer text-gray-400 font-semibold hover:text-gray-600"
           >
             X
           </span>
