@@ -1,31 +1,31 @@
-import { useState } from 'react'
-import Image from 'next/image'
-import { ethers } from 'ethers'
-import gou from '../ethereum/uchiha'
-import Uchiha from '../ethereum/build/Uchiha.json'
-import cong from '../public/cong.png'
+import { useState } from "react"
+import Image from "next/image"
+import { ethers } from "ethers"
+import gou from "../ethereum/uchiha"
+import Uchiha from "../ethereum/build/Uchiha.json"
+import cong from "../public/cong.png"
 
 function Modal(props) {
-  const [buttonMsg, setButtonMsg] = useState('Claim!')
+  const [buttonMsg, setButtonMsg] = useState("Claim!")
   const [bool, setBool] = useState(false)
 
   const onClaim = async () => {
     if (
-      typeof window !== 'undefined' &&
-      typeof window.ethereum !== 'undefined'
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
     ) {
       const isClaimed = await gou.claimedAddresses(props.address)
 
-      setButtonMsg('Claiming...')
+      setButtonMsg("Claiming...")
       setBool(true)
       try {
         if (!isClaimed) {
           const provider = new ethers.providers.Web3Provider(window.ethereum)
           await window.ethereum.request({
-            method: 'eth_requestAccounts',
+            method: "eth_requestAccounts",
           })
           const instance = new ethers.Contract(
-            '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
+            "0x796d99FeeFbC1CC820636DED9283AAa21a5C4A9E",
             Uchiha.abi,
             provider.getSigner(),
           )
@@ -34,9 +34,9 @@ function Modal(props) {
       } catch (err) {
         onCancel()
       }
-      setButtonMsg('Claimed!')
+      setButtonMsg("Claimed!")
     } else {
-      setButtonMsg('No Metamask!')
+      setButtonMsg("No Metamask!")
     }
   }
 

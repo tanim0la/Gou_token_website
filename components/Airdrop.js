@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import Image from 'next/image'
-import airdrop from '../public/airdrop.png'
-import { ethers } from 'ethers'
-import gou from '../ethereum/uchiha'
-import Uchiha from '../ethereum/build/Uchiha.json'
-import Modal from './Modal'
-import { useRouter } from 'next/router'
+import { useState } from "react"
+import Image from "next/image"
+import airdrop from "../public/airdrop.png"
+import { ethers } from "ethers"
+import gou from "../ethereum/uchiha"
+import Uchiha from "../ethereum/build/Uchiha.json"
+import Modal from "./Modal"
+import { useRouter } from "next/router"
 
 function Airdrop() {
-  const [address, setAddress] = useState('')
-  const [addy, setAddy] = useState('')
-  const [errMessage, setErrMessage] = useState('')
-  const [buttonMsg, setButtonMsg] = useState('Join Whitelist')
+  const [address, setAddress] = useState("")
+  const [addy, setAddy] = useState("")
+  const [errMessage, setErrMessage] = useState("")
+  const [buttonMsg, setButtonMsg] = useState("Join Whitelist")
   const [eligible, setEligible] = useState(false)
   const [modalOn, setModalOn] = useState(false)
   const [bool, setBool] = useState(false)
@@ -19,7 +19,7 @@ function Airdrop() {
   const Router = useRouter()
 
   const onClaim = async () => {
-    setErrMessage('')
+    setErrMessage("")
     setBool(true)
     try {
       const check = await gou.whitelistedAddresses(address)
@@ -30,51 +30,51 @@ function Airdrop() {
       } else {
         setEligible(true)
         setErrMessage(
-          'You are not Eligible for the airdrop, join whitelist above',
+          "You are not Eligible for the airdrop, join whitelist above",
         )
       }
     } catch (err) {
       setErrMessage(err.message)
     }
-    setAddress('')
+    setAddress("")
     setBool(false)
   }
 
   const onJoin = async () => {
     if (
-      typeof window !== 'undefined' &&
-      typeof window.ethereum !== 'undefined'
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
     ) {
-      setButtonMsg('Please wait...')
-      setErrMessage('')
+      setButtonMsg("Please wait...")
+      setErrMessage("")
       setBool(true)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       try {
         await window.ethereum.request({
-          method: 'eth_requestAccounts',
+          method: "eth_requestAccounts",
         })
         const instance = new ethers.Contract(
-          '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
+          "0x796d99FeeFbC1CC820636DED9283AAa21a5C4A9E",
           Uchiha.abi,
           provider.getSigner(),
         )
         await instance.whitelistAddress().then((tx) => tx.wait())
 
-        setButtonMsg('Join Whitelist')
-        setAddress('')
+        setButtonMsg("Join Whitelist")
+        setAddress("")
         setEligible(false)
         setBool(false)
-        Router.push('/')
+        Router.push("/")
       } catch (err) {
         setErrMessage(err.message)
-        setButtonMsg('Join Whitelist')
-        setAddress('')
+        setButtonMsg("Join Whitelist")
+        setAddress("")
         setEligible(false)
         setBool(false)
       }
     } else {
-      setErrMessage('You dont have Metamask Installed.')
-      setAddress('')
+      setErrMessage("You dont have Metamask Installed.")
+      setAddress("")
       setEligible(false)
     }
   }

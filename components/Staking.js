@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
-import gou from '../ethereum/uchiha'
-import stake from '../ethereum/staking'
-import StakingArtifacts from '../ethereum/build/Staking.json'
-import GouArtifacts from '../ethereum/build/Uchiha.json'
-import Image from 'next/image'
-import mm from '../public/mm.png'
-import Countdown from './Countdown'
+import { useState, useEffect } from "react"
+import { ethers } from "ethers"
+import gou from "../ethereum/uchiha"
+import stake from "../ethereum/staking"
+import StakingArtifacts from "../ethereum/build/Staking.json"
+import GouArtifacts from "../ethereum/build/Uchiha.json"
+import Image from "next/image"
+import mm from "../public/mm.png"
+import Countdown from "./Countdown"
 
 function Staking(props) {
-  const [address, setAddress] = useState('')
-  const [word, setWord] = useState('Connect Wallet')
+  const [address, setAddress] = useState("")
+  const [word, setWord] = useState("Connect Wallet")
   const [available, setAvailable] = useState()
   const [allowance, setAllowance] = useState()
   const [stakingInstance, setStakingInstance] = useState()
@@ -25,7 +25,7 @@ function Staking(props) {
   useEffect(() => {
     const onConnectt = async () => {
       const accounts = await window.ethereum.request({
-        method: 'eth_accounts',
+        method: "eth_accounts",
       })
 
       if (accounts[0]) {
@@ -35,19 +35,19 @@ function Staking(props) {
           const provider = new ethers.providers.Web3Provider(window.ethereum)
 
           const stakingInstance = new ethers.Contract(
-            '0x31fd0691809Ec54499d7363Be76807c9cbDD0e38',
+            "0x14e31AAD6E875cC552d24dD177730b1958CC6C02",
             StakingArtifacts.abi,
             provider.getSigner(),
           )
           const gouInstance = new ethers.Contract(
-            '0x212Fd30e63911B3EFb22d3ab177de3d26b6F5584',
+            "0x796d99FeeFbC1CC820636DED9283AAa21a5C4A9E",
             GouArtifacts.abi,
             provider.getSigner(),
           )
           const acctBal = await gou.balanceOf(accounts[0])
           const totalAllowance = await gou.allowance(
             accounts[0],
-            '0x31fd0691809Ec54499d7363Be76807c9cbDD0e38',
+            "0x14e31AAD6E875cC552d24dD177730b1958CC6C02",
           )
           const isStake = await stake.isStaking(accounts[0])
           const tStake = await stake.stakingBalance(accounts[0])
@@ -70,8 +70,8 @@ function Staking(props) {
     }
 
     if (
-      typeof window !== 'undefined' &&
-      typeof window.ethereum !== 'undefined'
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
     ) {
       onConnectt()
     }
@@ -79,19 +79,19 @@ function Staking(props) {
 
   const onConnect = async (e) => {
     if (
-      typeof window !== 'undefined' &&
-      typeof window.ethereum !== 'undefined'
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
     ) {
       try {
         setBool(true)
         // We are in the browser and metamask is running.
-        await window.ethereum.request({ method: 'eth_requestAccounts' })
+        await window.ethereum.request({ method: "eth_requestAccounts" })
       } catch (err) {
         console.log(err)
       }
 
       const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
+        method: "eth_requestAccounts",
       })
 
       if (accounts[0]) {
@@ -100,7 +100,7 @@ function Staking(props) {
       setBool(false)
     } else {
       // We are on the server *OR* the user is not running metamask
-      setWord('No MetaMask')
+      setWord("No MetaMask")
       setBool(false)
     }
   }
@@ -145,8 +145,8 @@ function Staking(props) {
       setBool(true)
       await gouInstance
         .increaseAllowance(
-          '0x31fd0691809Ec54499d7363Be76807c9cbDD0e38',
-          ethers.utils.parseEther('10000'),
+          "0x14e31AAD6E875cC552d24dD177730b1958CC6C02",
+          ethers.utils.parseEther("10000"),
         )
         .then((tx) => tx.wait())
       setBool(false)
@@ -164,7 +164,7 @@ function Staking(props) {
             <Image draggable={false} src={mm} />
           </div>
           <span className="text-end mt-1 px-2">
-            {address.slice(0, 5) + '...' + address.slice(37, 42)}
+            {address.slice(0, 5) + "..." + address.slice(37, 42)}
           </span>
         </div>
       ) : null}
@@ -173,7 +173,7 @@ function Staking(props) {
           <div className="grid grid-cols-1 ">
             <span className="text-sm">Available</span>
             <span className="text-lg font-semibold">
-              {connected ? available : '0'} GOU
+              {connected ? available : "0"} GOU
             </span>
             <span className="text-sm ">
               {staking && available > 99 ? (
@@ -190,7 +190,7 @@ function Staking(props) {
           <div className="grid grid-cols-1">
             <span className="text-sm">Total Staked</span>
             <span className="text-lg font-semibold">
-              {connected ? amountStaked : '0'} GOU
+              {connected ? amountStaked : "0"} GOU
             </span>
             <span className="text-sm ">
               {staking && amountStaked > 99 ? (
@@ -207,7 +207,7 @@ function Staking(props) {
           <div className="grid grid-cols-1">
             <span className="text-sm">APY</span>
             <span className="text-lg font-semibold">
-              {connected ? parseInt(apyy) : '0'}%
+              {connected ? parseInt(apyy) : "0"}%
             </span>
           </div>
           <div className="grid grid-cols-1">
@@ -230,7 +230,7 @@ function Staking(props) {
                 </button>
               ) : (
                 <span>
-                  {' '}
+                  {" "}
                   {allowance > 0 ? (
                     <button
                       disabled={bool}
